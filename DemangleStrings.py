@@ -1,14 +1,13 @@
 doc = Document.getCurrentDocument()
 seg = doc.getCurrentSegment()
-adr = doc.getCurrentAddress() #seg.getStartingAddress()
+adr = seg.getStartingAddress()
 last = adr + seg.getLength()
 
 PIC = 0
 
-#Loop through the whole segment
-#If you wanted, you could loop through all TYPE_PROCEDURE
-#segments as well above this to apply string information
-#to the entire document.
+#Loop through the whole code segment
+#if you want to do a single proceedure
+#it should be trivial to add in
 while adr < last:
 	instr = seg.getInstructionAtAddress(adr)
 	#If the instruction sets the PIC Register value in a register
@@ -35,7 +34,7 @@ while adr < last:
 					comment += "\" at " + hex(offset)
 					#Set it
 					seg.setInlineCommentAtAddress(adr, comment)
-					doc.log("[%d] Found calculated address of string %s" % (adr, comment))
+					doc.log("[0x%X] Found calculated address of string %s" % (adr, comment))
 	#if we call the address of the next instruction
 	else:
 		if instr.getInstructionString() == "call":
